@@ -1,6 +1,5 @@
 package example
 
-import spray.json._
 import dk.diku.blockchain._
 
 object Main extends App {
