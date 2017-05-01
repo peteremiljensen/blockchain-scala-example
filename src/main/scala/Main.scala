@@ -1,9 +1,11 @@
 package example
 
+import akka.actor.ActorSystem
 import dk.diku.blockchain._
 
 object Main extends App {
 
+  implicit val system = ActorSystem()
   val node: Node = new Node(9000)
 
   while (true) {
