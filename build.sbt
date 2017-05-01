@@ -8,3 +8,4 @@ scalaVersion := "2.11.11"
 libraryDependencies += "dk.diku" %% "blockchain" % "1.0" % "test"
 
 scalacOptions += "-deprecation"
+scalacOptions += "-feature"
