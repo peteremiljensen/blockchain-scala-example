@@ -5,6 +5,7 @@ import dk.diku.blockchain._
 
 object Main extends App {
 
+  implicit val validator = Validator((l: Loaf) => true, (b: Block) => true)
   implicit val system = ActorSystem()
   val node: Node = new Node(9000)
 
