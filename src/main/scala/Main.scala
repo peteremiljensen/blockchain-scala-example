@@ -16,6 +16,7 @@ object Main extends App {
       case Array("loaf", data) =>
         node.addLoaf(Loaf.generateLoaf(data))
       case Array("print", "blocklength") => println(node.getLength)
+      case Array("connect", ip, port) => node.connect(ip, port.toInt)
       case Array("") =>
       case _ => println("*** unknown function")
     }
