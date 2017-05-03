@@ -7,7 +7,8 @@ object Main extends App {
 
   implicit val validator = Validator((l: Loaf) => true, (b: Block) => true)
   implicit val system = ActorSystem()
-  val node: Node = new Node(9000)
+  val port: Integer = if (args.length > 0) args(0).toInt else 9000
+  val node: Node = new Node(port)
 
   while (true) {
     print("(freechain) ")
