@@ -26,6 +26,18 @@ object Main extends App {
     consensusCheck, consensus)
   implicit val system = ActorSystem()
 
+  def mine(loaves: Seq[Loaf], previousBlock: Block) = {
+
+    var nounce: Int = 0
+    var block: Block = Block.generateBlock(loaves, previousBlock, JObject())
+    do {
+      val data: JValue = JObject("nounce" -> JInt(nounce))
+      block = Block.generateBlock(loaves, previousBlock, data)
+      nounce = nounce + 1
+    } while (!block.validate)
+      block
+  }
+
   val port: Integer = if (args.length > 0) args(0).toInt else 9000
   val node: Node = new Node(port)
 
@@ -40,8 +52,22 @@ object Main extends App {
       args match {
         case Array("loaf", data) =>
           node.addLoaf(Loaf.generateLoaf(data))
-        /*case Array("mine") =>
-         node.*/
+        case Array("mine") =>
+          (node.getLoaves(1000), node.getLength) match {
+
+            case (Right(loaves: Seq[Loaf] @unchecked), Right(length: Int)) =>
+              node.getBlock(length-1) match {
+
+                case Right(Some(block: Block)) =>
+                  node.addBlock(mine(loaves, block)) match {
+
+                    case true =>
+                    case _ => println("*** error adding mined block")
+                  }
+                case _ => println("*** error getting block")
+              }
+            case _ => println("*** error getting chain info")
+          }
         case Array("print", "blocklength") => println(node.getLength)
         case Array("print", "blockchain") => println(node.getChain)
         case Array("connect", ip, port) => node.connect(ip, port.toInt)
