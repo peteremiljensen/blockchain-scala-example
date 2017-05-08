@@ -29,11 +29,11 @@ object Main extends App {
   val port: Integer = if (args.length > 0) args(0).toInt else 9000
   val node: Node = new Node(port)
 
-  val genesisBlock = Block(Seq(), 0, "-1", "2017-05-08 14:07:06.253455",
-    JObject("nounce" -> JInt(158880)),
-    "0000fad2912f37213f5a8d898dfd78cb3269f851e7c368415fe833ec61fa02eb")
+  val genesisBlock = Block(Seq(), 0, "-1", "2017-05-01 15:16:52.579123",
+    JObject("nounce" -> JInt(27413)),
+    "000077dbf86e9c0d593ac746a0658d88b966ddd0a132dcf9294c23a929ed4573")
 
-  if (genesisBlock.validate) {
+  if (node.addBlock(genesisBlock)) {
     while (true) {
       print("(freechain) ")
       val args = scala.io.StdIn.readLine().split(" ")
