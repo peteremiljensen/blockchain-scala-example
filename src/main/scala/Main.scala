@@ -59,11 +59,8 @@ object Main extends App {
               node.getBlock(length-1) match {
 
                 case Right(Some(block: Block)) =>
-                  node.addBlock(mine(loaves, block)) match {
-
-                    case true =>
-                    case _ => println("*** error adding mined block")
-                  }
+                  if (!node.addBlock(mine(loaves, block)))
+                    println("*** error adding mined block")
                 case _ => println("*** error getting block")
               }
             case _ => println("*** error getting chain info")
