@@ -1,5 +1,7 @@
 package example
 
+import org.json4s._
+import org.json4s.native.JsonMethods._
 import akka.actor.ActorSystem
 import dk.diku.blockchain._
 
@@ -22,22 +24,33 @@ object Main extends App {
 
   implicit val validator = Validator(loafVal, blockVal,
     consensusCheck, consensus)
-
   implicit val system = ActorSystem()
+
   val port: Integer = if (args.length > 0) args(0).toInt else 9000
   val node: Node = new Node(port)
 
-  while (true) {
-    print("(freechain) ")
-    val args = scala.io.StdIn.readLine().split(" ")
-    args match {
-      case Array("loaf", data) =>
-        node.addLoaf(Loaf.generateLoaf(data))
-      case Array("print", "blocklength") => println(node.getLength)
-      case Array("connect", ip, port) => node.connect(ip, port.toInt)
-      case Array("") =>
-      case _ => println("*** unknown function")
+  val genesisBlock = Block(Seq(), 0, "-1", "2017-05-08 14:07:06.253455",
+    JObject("nounce" -> JInt(158880)),
+    "0000fad2912f37213f5a8d898dfd78cb3269f851e7c368415fe833ec61fa02eb")
+
+  if (genesisBlock.validate) {
+    while (true) {
+      print("(freechain) ")
+      val args = scala.io.StdIn.readLine().split(" ")
+      args match {
+        case Array("loaf", data) =>
+          node.addLoaf(Loaf.generateLoaf(data))
+        /*case Array("mine") =>
+         node.*/
+        case Array("print", "blocklength") => println(node.getLength)
+        case Array("print", "blockchain") => println(node.getChain)
+        case Array("connect", ip, port) => node.connect(ip, port.toInt)
+        case Array("") =>
+        case _ => println("*** unknown function")
+      }
     }
+  } else {
+    println("*** could not validate genesisBlock: ") //+ genesisBlock.toJson)
   }
 
 }
