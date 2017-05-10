@@ -9,13 +9,10 @@ object Main extends App {
 
   def loafVal(l: Loaf) =
     l.calculateHash == l.hash
-
   def blockVal(b: Block) =
     b.calculateHash == b.hash && b.hash.substring(0,4) == "0000"
-
   def consensusCheck(localLength: Integer, recLength: Integer) =
     localLength < recLength
-
   def consensus(localChain: List[Block], recChain: List[Block]) =
     if (localChain.length > recChain.length)
       localChain
@@ -27,7 +24,6 @@ object Main extends App {
   implicit val system = ActorSystem()
 
   def mine(loaves: Seq[Loaf], previousBlock: Block) = {
-
     var nounce: Int = 0
     var block: Block = Block.generateBlock(loaves, previousBlock, JObject())
     do {
@@ -40,10 +36,14 @@ object Main extends App {
 
   val port: Integer = if (args.length > 0) args(0).toInt else 9000
   val node: Node = new Node(port)
-
   val genesisBlock = Block(Seq(), 0, "-1", "2017-05-01 15:16:52.579123",
     JObject("nounce" -> JInt(27413)),
     "000077dbf86e9c0d593ac746a0658d88b966ddd0a132dcf9294c23a929ed4573")
+
+  val events = new Events ({
+    case Events.ConnectionReady => println("*** new connection")
+    case _ =>
+  })
 
   if (node.addBlock(genesisBlock)) {
     print("(freechain) ")
