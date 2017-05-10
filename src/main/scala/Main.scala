@@ -67,6 +67,7 @@ object Main extends App {
           }
         case Array("print", "blocklength") => println(node.getLength)
         case Array("print", "blockchain") => println(node.getChain)
+        case Array("print", "loafpool") => println(node.getLoaves(20))
         case Array("connect", ip, port) => node.connect(ip, port.toInt)
         case Array("") =>
         case _ => println("*** unknown function")
