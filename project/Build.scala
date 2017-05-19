@@ -11,9 +11,9 @@ object ExampleBuild extends Build {
   // without dependsOn, you'll get a compiler error: "object bar is not a member of package
   // com.alvinalexander".
   lazy val root = Project(id = "example",
-                          base = file(".")) aggregate(blockchain) dependsOn(blockchain)
+                          base = file(".")) aggregate(freechain) dependsOn(freechain)
 
   // sub-project in the Foo subdirectory
-  lazy val blockchain = Project(id = "blockchain",
-                         base = file("Blockchain"))
+  lazy val freechain = Project(id = "freechain",
+                       base = file("Freechain"))
 }
