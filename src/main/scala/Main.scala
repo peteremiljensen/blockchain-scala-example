@@ -3,7 +3,7 @@ package example
 import org.json4s._
 import org.json4s.native.JsonMethods._
 import akka.actor.ActorSystem
-import dk.diku.blockchain._
+import dk.diku.freechain._
 
 object Main extends App {
 
@@ -68,6 +68,7 @@ object Main extends App {
                 }
               case _ => println("*** error getting chain info")
             }
+          case Array("print", "blockhashes") => println(node.getHashes)
           case Array("print", "blocklength") => println(node.getLength)
           case Array("print", "blockchain") => println(node.getChain)
           case Array("print", "loafpool") => println(node.getLoaves(20))
