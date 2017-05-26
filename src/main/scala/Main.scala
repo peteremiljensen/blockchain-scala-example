@@ -11,16 +11,13 @@ object Main extends App {
     l.calculateHash == l.hash
   def blockVal(b: Block) =
     b.calculateHash == b.hash && b.hash.substring(0,4) == "0000"
-  def consensusCheck(localLength: Integer, recLength: Integer) =
-    localLength < recLength
-  def consensus(localChain: List[Block], recChain: List[Block]) =
+  def branching(localChain: List[Block], recChain: List[Block]) =
     if (localChain.length > recChain.length)
       localChain
     else
       recChain
 
-  implicit val validator = Validator(loafVal, blockVal,
-    consensusCheck, consensus)
+  implicit val validator = Validator(loafVal, blockVal, branching)
   implicit val system = ActorSystem()
 
   def mine(loaves: Seq[Loaf], previousBlock: Block) = {
