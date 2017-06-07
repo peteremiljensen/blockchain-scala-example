@@ -1,2 +1,2 @@
 # freechain-scala-example
-An example application dependent on blockchain-scala
+An example application dependent on Freechain
